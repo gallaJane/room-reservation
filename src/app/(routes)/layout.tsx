@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 
+import SignInModal from "@/components/modals/sign-in-modal";
 import Provider from "@/app/lib/provider";
 
 export const ubuntu = Ubuntu({
@@ -18,8 +19,9 @@ export const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "Flowr Spot",
-  description: "Flowr Spot App",
+  title: "CoWork Rooms",
+  description: "CoWork Rooms App",
+  icons: { icon: '/logo.svg' }
 };
 
 export default async function RootLayout({
@@ -33,7 +35,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en">
         <body className={ubuntu.className} >
-
+          <SignInModal />
           <div className="pb-20">
             <Provider>
               {children}
