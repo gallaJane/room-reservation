@@ -16,6 +16,9 @@ import { Session } from "next-auth";
 import Container from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/ui/logo';
+import UserNav from '@/components/ui/user-nav';
+import SearchInput from '@/components/ui/search-input';
+import { NavMenu } from './nav-menu';
 
 type NavBarProps = {
     currentUser: Session["user"] | undefined;
@@ -28,7 +31,6 @@ const Navbar = ({ currentUser }: NavBarProps) => {
     const menu = useMenu();
 
     const { setCurrentUser, clearUser } = useCurrentUserStore();
-
 
     useEffect(() => {
         if (currentUser) {
@@ -65,8 +67,13 @@ const Navbar = ({ currentUser }: NavBarProps) => {
                         <Logo />
                         <div className='font-bold text-xl'>CoWork Rooms</div>
                     </div>
-                    <div className='flex gap-3 items-center'>
 
+                    <SearchInput />
+
+                    <div className='flex gap-3 items-center'>
+                        <div>
+                            <NavMenu />
+                        </div>
                         {!currentUser && (
                             <>
                                 <Button
@@ -79,6 +86,12 @@ const Navbar = ({ currentUser }: NavBarProps) => {
                                 >Sign up</Button>
                             </>
 
+                        )}
+                        {currentUser && (
+                            <UserNav
+                                currentUser={currentUser}
+                                className='text-gray-500'
+                            />
                         )}
                     </div>
                 </div>
