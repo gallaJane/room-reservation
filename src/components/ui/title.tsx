@@ -11,7 +11,7 @@ export enum TypeEnum {
 
 const titleTypes: Record<TypeEnum, string> = {
     [TypeEnum.section]: 'text-lg sm:text-custom-4xl font-light',
-    [TypeEnum.cardMain]: 'text-xl sm:text-2xl font-light',
+    [TypeEnum.cardMain]: ' sm:text-2xl  text-2xl font-semibold leading-none tracking-tight',
     [TypeEnum.card]: 'text-lg sm:text-xl font-light',
 };
 
