@@ -25,15 +25,14 @@ const UserProfileModal = ({ confirmationTitle }: UserProfileModalProps) => {
     }
 
     const userProfileFields = [
-        { label: 'First Name', value: currentUser?.first_name },
-        { label: 'Last Name', value: currentUser?.last_name },
+        { label: 'Name', value: currentUser?.name },
         { label: 'Date of Birth', value: 'June 20, 1985' },
         { label: 'Email', value: currentUser?.email || 'john.doe@gmail.com' }
     ];
 
     const bodyContent = (
         <ProfileWrapper
-            title={`${currentUser?.first_name} ${currentUser?.last_name}`}
+            title={`${currentUser?.name}`}
             imgSrc={currentUser?.image || "/images/avatar.png"}
         >
             {userProfileFields.map((field, index) => (

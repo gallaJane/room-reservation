@@ -20,10 +20,7 @@ export const SignInSchema = z.object({
 });
 
 export const SignUpSchema = z.object({
-    first_name: z
-        .string()
-        .min(1, { message: EMPTY_FIELD_MESSAGE }),
-    last_name: z
+    name: z
         .string()
         .min(1, { message: EMPTY_FIELD_MESSAGE }),
     email: z

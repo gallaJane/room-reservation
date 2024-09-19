@@ -38,8 +38,7 @@ export const {
                     return {
                         id: "1",
                         email: '',
-                        first_name: "John",
-                        last_name: "Doe",
+                        name: "John",
                         authToken: "dummyAuthToken"
                     };
 
@@ -55,9 +54,7 @@ export const {
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
-                token.name = `${user.first_name} ${user.last_name}`;
-                token.first_name = user.first_name;
-                token.last_name = user.last_name;
+                token.name = `${user.name}`;
                 token.accessToken = user.authToken;
                 const decodedAccessToken = JSON.parse(Buffer.from(user.authToken.split(".")[1], "base64").toString());
                 token.accessTokenExpires = decodedAccessToken.exp * 1000;
@@ -76,8 +73,6 @@ export const {
             session.user.id = token.id as string;
             session.user.email = token.email as string;
             session.user.name = token.name as string;
-            session.user.first_name = token.first_name as string;
-            session.user.last_name = token.last_name as string;
             session.user.accessToken = token.accessToken as string;
             session.user.accessTokenExpires = Number(token.accessTokenExpires);
             session.error = token.error as string;

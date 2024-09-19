@@ -29,7 +29,7 @@ const UserNav = ({
 
     return (
         <>
-            <NavItem label={`${currentUser?.first_name} ${currentUser?.last_name}`} className={className} />
+            <NavItem label={`${currentUser?.name}`} className={className} />
             <Button onClick={handleAvatarClick}>
                 <Avatar
                     imageSrc={currentUser?.image || "/images/avatar.png"}

@@ -6,8 +6,6 @@ declare module "next-auth" {
             id: string | null | undefined;
             email: string | null | undefined;
             name?: string | null | undefined;
-            first_name?: string;
-            last_name?: string;
             accessToken?: string;
             accessTokenExpires?: number;
         } & DefaultSession["user"];
@@ -17,8 +15,7 @@ declare module "next-auth" {
     interface User {
         id?: string;
         email?: string | null;
-        first_name: string;
-        last_name: string;
+        name: string;
         authToken: string;
     }
 }
@@ -28,8 +25,6 @@ declare module "next-auth" {
         id: string;
         email: string;
         name?: string | null | undefined;
-        first_name: string;
-        last_name: string;
         accessToken: string;
         accessTokenExpires: number;
         error?: string;
