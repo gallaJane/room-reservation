@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 // import { loginUser } from "@/app/services/api/data/useAuth.api";
-import { LoginSchema } from "@/schemas";
+import { SignInSchema } from "@/schemas";
 
 
 export const {
@@ -18,7 +18,7 @@ export const {
                 password: { label: "password", type: "password" }
             },
             async authorize(credentials) {
-                const validatedFields = LoginSchema.safeParse(credentials);
+                const validatedFields = SignInSchema.safeParse(credentials);
 
                 if (validatedFields.success) {
                     const { email, password } = validatedFields.data;

@@ -1,14 +1,14 @@
 'use server';
 
 import { AuthError } from "next-auth";
-import { LoginSchema } from "@/schemas";
+import { SignInSchema } from "@/schemas";
 import { signIn } from "@/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_SIGNIN_REDIRECT } from "@/routes";
 import * as z from 'zod';
 
 
-export const login = async (values: z.infer<typeof LoginSchema>) => {
-    const validatedFields = LoginSchema.safeParse(values);
+export const login = async (values: z.infer<typeof SignInSchema>) => {
+    const validatedFields = SignInSchema.safeParse(values);
     if (!validatedFields.success) {
         return {
             error: 'Invalid fields'
@@ -20,7 +20,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         await signIn("credentials", {
             email,
             password,
-            redirectTo: DEFAULT_LOGIN_REDIRECT
+            redirectTo: DEFAULT_SIGNIN_REDIRECT
         })
     }
     catch (error) {

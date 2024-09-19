@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import {
-    DEFAULT_LOGIN_REDIRECT,
+    DEFAULT_SIGNIN_REDIRECT,
     publicRoutes,
     authRoutes,
     apiAuthPrefix
@@ -20,7 +20,7 @@ export default auth((req) => {
 
     if (isAuthRoute) {
         if (isLoggedIn) {
-            return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+            return Response.redirect(new URL(DEFAULT_SIGNIN_REDIRECT, nextUrl))
         }
         return
     }

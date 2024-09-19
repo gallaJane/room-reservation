@@ -6,7 +6,7 @@ import {
     MIN_PASS_LENGTH,
 } from './types';
 
-export const LoginSchema = z.object({
+export const SignInSchema = z.object({
     email: z
         .string()
         .min(MIN_FIELD_LENGTH, { message: EMPTY_FIELD_MESSAGE })
@@ -19,7 +19,7 @@ export const LoginSchema = z.object({
         }),
 });
 
-export const RegisterSchema = z.object({
+export const SignUpSchema = z.object({
     first_name: z
         .string()
         .min(1, { message: EMPTY_FIELD_MESSAGE }),
@@ -38,8 +38,8 @@ export const RegisterSchema = z.object({
         }),
 });
 
-export type LoginFormData = z.infer<typeof LoginSchema>;
-export type ValidFieldNames = keyof LoginFormData;
+export type SignInFormData = z.infer<typeof SignInSchema>;
+export type ValidFieldNames = keyof SignInFormData;
 
-export type RegisterFormData = z.infer<typeof RegisterSchema>;
-export type ValidFieldNamesRegister = keyof RegisterFormData;
+export type SignUpFormData = z.infer<typeof SignUpSchema>;
+export type ValidFieldNamesRegister = keyof SignUpFormData;

@@ -12,24 +12,24 @@ export type ConfirmationSignInModalProps = {
 }
 
 const ConfirmationSignInModal = ({ confirmationTitle, body }: ConfirmationSignInModalProps) => {
-    const confirmationLoginModal = useConfirmationSignInModal();
+    const confirmationSignInModal = useConfirmationSignInModal();
     const userProfileModal = useUserProfileModal();
 
     const toggle = useCallback(() => {
-        confirmationLoginModal.onClose();
+        confirmationSignInModal.onClose();
         userProfileModal.onOpen();
-    }, [confirmationLoginModal, userProfileModal]);
+    }, [confirmationSignInModal, userProfileModal]);
 
     return (
         <>
             <Modal
-                isOpen={confirmationLoginModal.isOpen}
+                isOpen={confirmationSignInModal.isOpen}
                 title={confirmationTitle}
                 actionLabel='PROFILE'
-                onClose={confirmationLoginModal.onClose}
+                onClose={confirmationSignInModal.onClose}
                 onSubmit={toggle}
                 secondaryActionLabel='OK'
-                secondaryAction={confirmationLoginModal.onClose}
+                secondaryAction={confirmationSignInModal.onClose}
                 body={body}
             />
             <UserProfileModal
