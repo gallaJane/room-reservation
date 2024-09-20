@@ -4,6 +4,7 @@ import React from 'react'
 import RoomCard from '@/components/room/room-card';
 
 const RoomList = ({ rooms }: { rooms: Room[] }) => {
+
     return (
         <div className='grid grid-cols-1 sm:grid-cold-2 lg:grid-cols-3 gap-x-8 gap-y-12 mt-4'>
             {rooms.map((room) => (
@@ -12,7 +13,6 @@ const RoomList = ({ rooms }: { rooms: Room[] }) => {
                         room={room}
                     />
                 </div>
-
             ))}
         </div>
     )

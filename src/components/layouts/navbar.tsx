@@ -91,9 +91,12 @@ const Navbar = ({ currentUser }: NavBarProps) => {
                     <SearchInput />
 
                     <div className='flex gap-3 items-center'>
-                        <div>
-                            <NavMenu currentUser={currentUser} />
-                        </div>
+                        {currentUser && (
+                            <div>
+                                <NavMenu currentUser={currentUser} />
+                            </div>
+                        )}
+
                         {!currentUser && (
                             <>
                                 <Button

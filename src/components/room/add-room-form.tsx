@@ -29,7 +29,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation';
 import { Room } from '@prisma/client';
 
-import { Eye, Hotel, Loader2, Pencil, PencilLine, Trash } from 'lucide-react';
+import { Eye, Loader2, Pencil, PencilLine, Trash } from 'lucide-react';
 
 export type AddRoomFormProps = {
   room: Room | null

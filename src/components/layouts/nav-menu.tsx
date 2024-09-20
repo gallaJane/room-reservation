@@ -23,8 +23,8 @@ type NavMenuProps = {
 
 
 export function NavMenu({ currentUser }: NavMenuProps) {
-    const router = useRouter()
-        ;
+    const router = useRouter();
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
