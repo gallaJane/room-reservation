@@ -3,6 +3,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 
 import { db } from '@/lib/db';
 import authConfig from "@/auth.config";
+import { Role } from "@prisma/client";
 
 export const {
     handlers: { GET, POST },
@@ -18,6 +19,7 @@ export const {
                 token.id = user.id;
                 token.email = user.email;
                 token.name = `${user.name}`;
+                token.role = user.role;
             }
 
             // Check if the access token has expired
@@ -36,6 +38,7 @@ export const {
             session.user.accessToken = token.accessToken as string;
             session.user.accessTokenExpires = Number(token.accessTokenExpires);
             session.error = token.error as string;
+            session.user.role = token.role as Role
             return session;
         },
     },

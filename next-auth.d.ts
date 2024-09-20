@@ -1,4 +1,5 @@
 import { DefaultSession } from "next-auth";
+import { Role } from "@prisma/client";
 
 declare module "next-auth" {
     interface Session {
@@ -8,6 +9,7 @@ declare module "next-auth" {
             name?: string | null | undefined;
             accessToken?: string;
             accessTokenExpires?: number;
+            role: Role;
         } & DefaultSession["user"];
         error?: string;
     }
@@ -16,6 +18,7 @@ declare module "next-auth" {
         id?: string;
         email?: string | null;
         name: string;
+        role: Role
     }
 }
 
@@ -26,6 +29,7 @@ declare module "next-auth" {
         name?: string | null | undefined;
         accessToken: string;
         accessTokenExpires: number;
+        role: Role;
         error?: string;
     }
 }
