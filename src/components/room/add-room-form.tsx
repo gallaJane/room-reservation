@@ -25,6 +25,7 @@ import axios from 'axios';
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation';
 import { Room } from '@prisma/client';
+import { Toaster } from '../ui/toaster';
 
 export type AddRoomFormProps = {
   room: Room | null
@@ -63,7 +64,24 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
     = async (data: AddRoomFormData) => {
       setIsLoading(true);
       if (room) {
-        //update room
+        axios.patch(`/api/room/${room.id}`,
+          data).then(
+            (res) => {
+              toast({
+                variant: "default",
+                description: 'Room updated'
+              })
+
+              router.push(`/room/${res.data.id}`);
+              setIsLoading(false);
+            }).catch((error) => {
+              console.log(error);
+              toast({
+                variant: "destructive",
+                description: 'Something went wrong!'
+              })
+              setIsLoading(false);
+            })
       } else {
         axios.post('/api/room', data).then(
           (res) => {
@@ -182,6 +200,7 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
         </form>
 
       </Form>
+      <Toaster />
     </div>
   )
 }
