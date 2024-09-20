@@ -30,7 +30,7 @@ const UserNav = ({
     return (
         <>
             <NavItem label={`${currentUser?.name}`} className={className} />
-            <Button onClick={handleAvatarClick}>
+            <Button className="bg-transparent hover:bg-transparent" onClick={handleAvatarClick}>
                 <Avatar
                     imageSrc={currentUser?.image || "/images/avatar.png"}
                     height={30}

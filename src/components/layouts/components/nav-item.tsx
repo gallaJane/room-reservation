@@ -17,7 +17,7 @@ type NavItemsProps = {
 };
 
 const NavItem = ({ href, label, className = '', onClick }: NavItemsProps) => {
-    const baseClass = 'block mt-12 lg:inline-block lg:mt-0 mr-10 transition hover:text-gray-500/75 font-medium text-sm leading-none text-left';
+    const baseClass = 'text-sm font-semibold';
     const combinedClassNames = classNames(
         baseClass,
         montserrat.className,
