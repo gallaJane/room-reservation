@@ -29,13 +29,12 @@ const Title = ({
     className }
     : TitleProps) => {
     const combinedClassNames = classNames(
-        'text-custom-dark',
         titleTypes[type],
         className
     );
 
     return (
-        <div className='flex flex-col items-center justify-center w-full gap-y-4'>
+        <div className='flex flex-col w-full gap-y-4'>
             <TagName className={combinedClassNames}>{children}</TagName>
         </div>
     );
