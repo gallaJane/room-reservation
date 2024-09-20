@@ -5,8 +5,10 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 
 import SignInModal from "@/components/modals/sign-in-modal";
+import SignUpModal from "@/components/modals/sign-up-modal";
 import Provider from "@/app/lib/provider";
 import Navbar from "@/components/layouts/navbar";
+
 
 export const ubuntu = Ubuntu({
   subsets: ['latin'],
@@ -38,6 +40,7 @@ export default async function RootLayout({
         <body className={ubuntu.className}>
           <main className="flex flex-col min-h-screen bg-secondary">
             <SignInModal />
+            <SignUpModal />
             <Navbar currentUser={session?.user} />
             <section className="pb-20 bg-red-500 flex-grow">
               <Provider>

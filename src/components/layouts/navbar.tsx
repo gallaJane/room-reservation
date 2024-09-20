@@ -32,6 +32,13 @@ const Navbar = ({ currentUser }: NavBarProps) => {
 
     const { setCurrentUser, clearUser } = useCurrentUserStore();
 
+    const commonItems = [
+        { label: 'Flowers', href: '/flowers', className: 'text-gray-500' },
+        { label: 'Latest Sightings', href: '/latest-sightings', className: 'text-gray-500' },
+        { label: 'Favorites', href: '/favorites', className: 'text-gray-500' }
+    ];
+
+
     useEffect(() => {
         if (currentUser) {
             setCurrentUser(currentUser);
@@ -57,6 +64,20 @@ const Navbar = ({ currentUser }: NavBarProps) => {
             signUpModal.onOpen();
         }
     }, [currentUser, signUpModal, menu]);
+
+    const toggle = useCallback(() => {
+        if (menu.isOpen) {
+            menu.onClose();
+        } else {
+            menu.onOpen();
+        }
+    }, [menu]);
+
+    const handleNavItemClick = useCallback(() => {
+        if (menu.isOpen) {
+            menu.onClose();
+        }
+    }, [menu]);
 
 
     return (
