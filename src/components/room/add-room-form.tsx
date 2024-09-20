@@ -2,10 +2,13 @@
 
 import React, { useState, useEffect } from 'react'
 
-import { useForm, UseFormRegister, SubmitHandler, FieldValues } from "react-hook-form";
-import { useTransition } from "react";
+import { useForm, SubmitHandler, } from "react-hook-form";
+import axios from 'axios';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AddRoomSchema, AddRoomFormData } from '@/schemas';
+import {
+  AddRoomSchema,
+  AddRoomFormData
+} from '@/schemas';
 import {
   Form,
   FormField,
@@ -19,13 +22,14 @@ import { Input } from '@/components/ui/input';
 import Title from '@/components/ui/title';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Toaster } from '@/components/ui/toaster';
 
-import { Loader2, Pencil, PencilLine } from 'lucide-react';
-import axios from 'axios';
+
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation';
 import { Room } from '@prisma/client';
-import { Toaster } from '../ui/toaster';
+
+import { Eye, Hotel, Loader2, Pencil, PencilLine, Trash } from 'lucide-react';
 
 export type AddRoomFormProps = {
   room: Room | null
@@ -35,6 +39,7 @@ const amenitiesList = ["Whiteboard", "Projector", "TV", "Conference Phone", "Air
 
 const AddRoomForm = ({ room }: AddRoomFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -59,49 +64,49 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
   }, [room, form]);
 
 
+  const handleDeleteRoom = async (room: Room) => {
+    setIsDeleting(true);
 
-  const onSubmit: SubmitHandler<AddRoomFormData>
-    = async (data: AddRoomFormData) => {
-      setIsLoading(true);
-      if (room) {
-        axios.patch(`/api/room/${room.id}`,
-          data).then(
-            (res) => {
-              toast({
-                variant: "default",
-                description: 'Room updated'
-              })
+    try {
+      await axios.delete(`/api/room/${room.id}`)
+      setIsDeleting(false);
+      toast({
+        variant: "default",
+        description: 'Room deleted'
+      })
+      router.push('/room/new')
 
-              router.push(`/room/${res.data.id}`);
-              setIsLoading(false);
-            }).catch((error) => {
-              console.log(error);
-              toast({
-                variant: "destructive",
-                description: 'Something went wrong!'
-              })
-              setIsLoading(false);
-            })
-      } else {
-        axios.post('/api/room', data).then(
-          (res) => {
-            toast({
-              variant: "default",
-              description: 'Room created'
-            })
+    } catch (error) {
+      console.log(error);
+      toast({
+        variant: "destructive",
+        description: 'Something went wrong!'
+      })
+      setIsLoading(false);
+    }
+  }
 
-            router.push(`/room/${res.data.id}`);
-            setIsLoading(false);
-          }).catch((error) => {
-            console.log(error);
-            toast({
-              variant: "destructive",
-              description: 'Something went wrong!'
-            })
-            setIsLoading(false);
-          })
-      }
-    };
+  const handleRoomRequest = async (url: string, method: 'patch' | 'post', data: AddRoomFormData) => {
+    setIsLoading(true);
+    try {
+      const res = await axios[method](url, data);
+      toast({ variant: "default", description: room ? 'Room updated' : 'Room created' });
+      router.push(`/room/${res.data.id}`);
+    } catch (error) {
+      console.error(error);
+      toast({ variant: "destructive", description: 'Something went wrong!' });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const onSubmit: SubmitHandler<AddRoomFormData> = (data) => {
+    const url = room ? `/api/room/${room.id}` : '/api/room';
+    const method: 'patch' | 'post' = room ? 'patch' : 'post';
+    handleRoomRequest(url, method, data);
+  };
+
+
 
   return (
     <div>
@@ -144,10 +149,8 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                   </FormItem>
                 )}
               />
-
-
-
             </div>
+
             <div className='flex-1 flex flex-col gap-6'>
               <FormField
                 control={form.control}
@@ -184,13 +187,37 @@ const AddRoomForm = ({ room }: AddRoomFormProps) => {
                 )}
               />
               <div className='flex justify-between gap-2 flex-wrap'>
+                {/* DELETE */}
+                {room &&
+                  <Button className='max-width-[150px]'
+                    onClick={() => handleDeleteRoom(room)} variant='ghost' type='button' disabled={isDeleting || isLoading}>
+                    {isDeleting ?
+                      <><Loader2 className='mr-2 h-4 w-4' /> Deleting...</> : <><Trash className='mr-2 h-4 w-4' />Delete</>
+                    }
+                  </Button>
+                }
+                {/* VIEW */}
+                {room &&
+                  <Button className='max-width-[150px]'
+                    onClick={() => router.push(`/room-details/${room.id}`)}
+                    type='button' variant='outline'>
+                    <Eye className='mr-2 h-4 w-4' />View Room
+                  </Button>
+                }
+
+                {/* CREATE */}
                 {room ?
                   <Button disabled={isLoading} className='max-width-[150px]'>
                     {isLoading ?
-                      <><Loader2 className='mr-2 h-4 w-4' /> Updating...</> : <><PencilLine className='mr-2 h-4 w-4' />Update</>}</Button>
+                      <><Loader2 className='mr-2 h-4 w-4' /> Updating...</> : <><PencilLine className='mr-2 h-4 w-4' />Update</>
+                    }
+                  </Button>
                   : <Button disabled={isLoading} className='max-width-[150px]'>
                     {isLoading ?
-                      <><Loader2 className='mr-2 h-4 w-4' /> Creating...</> : <><Pencil className='mr-2 h-4 w-4' />Create Room</>}</Button>}
+                      <><Loader2 className='mr-2 h-4 w-4' /> Creating...</> : <><Pencil className='mr-2 h-4 w-4' />Create Room</>
+                    }
+                  </Button>
+                }
               </div>
             </div>
           </div>
