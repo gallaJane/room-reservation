@@ -8,6 +8,7 @@ import SignInModal from "@/components/modals/sign-in-modal";
 import SignUpModal from "@/components/modals/sign-up-modal";
 import Provider from "@/app/lib/provider";
 import Navbar from "@/components/layouts/navbar";
+import Container from "@/components/ui/container";
 
 
 export const ubuntu = Ubuntu({
@@ -42,9 +43,12 @@ export default async function RootLayout({
             <SignInModal />
             <SignUpModal />
             <Navbar currentUser={session?.user} />
-            <section className="pb-20 bg-red-500 flex-grow">
+            <section className="pb-20 flex-grow">
               <Provider>
-                {children}
+                <Container>
+                  {children}
+                </Container>
+
               </Provider>
             </section>
           </main>

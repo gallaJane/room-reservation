@@ -38,7 +38,6 @@ const Navbar = ({ currentUser }: NavBarProps) => {
         { label: 'Favorites', href: '/favorites', className: 'text-gray-500' }
     ];
 
-
     useEffect(() => {
         if (currentUser) {
             setCurrentUser(currentUser);
@@ -93,7 +92,7 @@ const Navbar = ({ currentUser }: NavBarProps) => {
 
                     <div className='flex gap-3 items-center'>
                         <div>
-                            <NavMenu />
+                            <NavMenu currentUser={currentUser} />
                         </div>
                         {!currentUser && (
                             <>

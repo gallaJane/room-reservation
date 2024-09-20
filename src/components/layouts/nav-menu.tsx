@@ -15,7 +15,14 @@ import {
 import { useRouter } from "next/navigation"
 
 
-export function NavMenu() {
+import { Session } from "next-auth";
+
+type NavMenuProps = {
+    currentUser: Session["user"] | undefined;
+}
+
+
+export function NavMenu({ currentUser }: NavMenuProps) {
     const router = useRouter()
         ;
     return (
@@ -26,12 +33,15 @@ export function NavMenu() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/room/new')}>
-                    <Plus size={15} />
-                    <span>
-                        Add Room
-                    </span>
-                </DropdownMenuItem>
+                {currentUser?.role == 'ADMIN' && (
+                    <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/room/new')}>
+                        <Plus size={15} />
+                        <span>
+                            Add Room
+                        </span>
+                    </DropdownMenuItem>
+                )}
+
                 <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/my-rooms')}>
                     <DoorOpen size={15} />
                     <span>
