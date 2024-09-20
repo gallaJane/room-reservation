@@ -16,7 +16,6 @@ declare module "next-auth" {
         id?: string;
         email?: string | null;
         name: string;
-        authToken: string;
     }
 }
 
