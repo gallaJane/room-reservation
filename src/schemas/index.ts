@@ -4,6 +4,7 @@ import {
     MIN_FIELD_LENGTH,
     MAX_STRING_LENGTH,
     MIN_PASS_LENGTH,
+    MAX_CAPACITY,
 } from './types';
 
 export const SignInSchema = z.object({
@@ -35,8 +36,27 @@ export const SignUpSchema = z.object({
         }),
 });
 
+
+export const AddRoomSchema = z.object({
+    name: z
+        .string()
+        .min(1, { message: EMPTY_FIELD_MESSAGE }),
+    capacity: z
+        .number()
+        .min(1, { message: "Capacity must be at least 1." })
+        .max(MAX_CAPACITY, {
+            message: `Capacity should not exceed ${MAX_CAPACITY}.`,
+        }),
+    amenities: z
+        .array(z.string().min(1, { message: "Each amenity must be at least 1 character." }))
+        .nonempty({ message: "There must be at least one amenity." }),
+});
+
 export type SignInFormData = z.infer<typeof SignInSchema>;
 export type ValidFieldNames = keyof SignInFormData;
 
 export type SignUpFormData = z.infer<typeof SignUpSchema>;
 export type ValidFieldNamesRegister = keyof SignUpFormData;
+
+export type AddRoomFormData = z.infer<typeof AddRoomSchema>;
+export type ValidFieldNamesAddRoomsForm = keyof AddRoomFormData;
