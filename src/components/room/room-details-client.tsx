@@ -1,7 +1,7 @@
 'use client'
 
 import { Booking, Room } from '@prisma/client'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import { useCurrentUserStore } from '@/app/store/use-current-user.store';
 import { useToast } from "@/hooks/use-toast"
@@ -27,6 +27,26 @@ const RoomDetailsClient = ({ room, bookings }: { room: Room, bookings?: Booking[
     const handleTimeRangeChange = (timeRange: string) => {
         setTimeRange(timeRange);
     };
+
+
+    // To-Do: update app with this 
+    const disabledDateAndTimeSlots = useMemo(() => {
+        const disabledSlots: { [date: string]: { [timeSlot: string]: boolean } } = {};
+        const roomBookings = bookings?.filter(booking => booking.roomId === room.id);
+
+        roomBookings?.forEach(booking => {
+            const bookingDate = booking.date.toISOString().split('T')[0]; // 
+            const timeSlot = booking.timeSlot;
+
+            if (!disabledSlots[bookingDate]) {
+                disabledSlots[bookingDate] = {};
+            }
+            // Mark the time slot as disabled
+            disabledSlots[bookingDate][timeSlot] = true;
+        });
+
+        return disabledSlots;
+    }, [bookings, room.id]);
 
     const handleBookRoom = () => {
         if (!currentUser?.id) {

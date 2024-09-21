@@ -18,15 +18,23 @@ export type DateTimePickerFormProps = {
     date: Date | undefined,
     setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
     handleTimeRangeChange: (timeRange: string) => void,
-    timeRange: string
+    timeRange: string,
+    disabledSlots?: { [date: string]: { [timeSlot: string]: boolean } }
 }
 
 export function DateTimePickerForm({
     date,
     setDate,
     handleTimeRangeChange,
-    timeRange
+    timeRange,
+    disabledSlots
 }: DateTimePickerFormProps) {
+
+    //To-Do: implement this in the app
+    const isDisabledDate = (dateToCheck: Date) => {
+        const dateString = dateToCheck.toISOString().split('T')[0];
+        return disabledSlots && disabledSlots[dateString] !== undefined;
+    };
 
     return (
         <Popover>
