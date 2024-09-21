@@ -19,8 +19,16 @@ export async function POST(req: Request) {
             },
         })
 
+        // If a booking exists, update it
         if (existingBooking) {
-            return NextResponse.json({ error: "Booking for this room and time already exists." }, { status: 400 })
+            const updatedBooking = await db.booking.update({
+                where: { id: existingBooking.id },
+                data: {
+                    date: new Date(booking.date),
+                    timeSlot: booking.timeSlot,
+                },
+            })
+            return NextResponse.json(updatedBooking, { status: 200 })
         }
 
         const newBooking = await db.booking.create({
