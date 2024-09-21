@@ -48,11 +48,9 @@ export default async function RootLayout({
                 <Container>
                   {children}
                 </Container>
-
               </Provider>
             </section>
           </main>
-
         </body>
       </html>
     </SessionProvider>
