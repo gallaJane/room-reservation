@@ -8,6 +8,7 @@
 - [Technologies](#technologies)
 - [Features](#features)
 - [Setup](#setup)
+- [Admin Credentials](#credentials)
 - [env. Configuration](#env-configuration)
 - [Approach](#approach)
 - [API Reference](#api-reference)
@@ -34,12 +35,15 @@ Initialized the project with TypeScript using the command:
 - Prisma/mongoDb setup instead of mocks
 
 ## Setup
-
 - Unzip the project folder.
 -  Navigate to the project directory: 
    `cd room-reservation`
 - run `npm install`
 - Start the development server: `npm run dev`
+
+## Admin Credentials
+- Username: `admin@gmail.com`
+- Password: `111111`
 
 ## .env Configuration
 - `AUTH_SECRET='NEXTAUTH_SECRET'`
@@ -52,5 +56,7 @@ Initialized the project with TypeScript using the command:
 - **Authentication**: Used the latest version of authjs for user authentication.
 - **Tests**: To-Do: Implement tests including unit tests and snapshot tests to ensure the reliability of components.
 - **Documentation**: Documented the setup process and usage instructions in this README file.
+
+
 
 
