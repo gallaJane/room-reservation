@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronsUpDownIcon, Plus, DoorOpen, BookOpenCheck } from "lucide-react"
+import { ChevronsUpDownIcon, Plus, DoorOpen, BookOpenCheck, Users } from "lucide-react"
 
 
 
@@ -47,6 +47,13 @@ export function NavMenu({ currentUser }: NavMenuProps) {
                             <DoorOpen size={15} />
                             <span>
                                 Rooms
+                            </span>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/users')}>
+                            <Users size={15} />
+                            <span>
+                                Users
                             </span>
                         </DropdownMenuItem>
                     </div>
