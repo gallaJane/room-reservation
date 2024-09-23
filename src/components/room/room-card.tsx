@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils'
 import { Room } from '@prisma/client'
 import { usePathname, useRouter } from 'next/navigation'
 
+import RoomAmenities from '@/components/room/room-amenities';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Button } from '@/components/ui/button'
 
@@ -26,16 +28,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                 <CardDescription>{room.capacity} capacity</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="flex justify-center pt-4 pb-4 bg-gray-100 rounded-lg">
-                    <div className="grid grid-cols-2 gap-4">
-                        {room.amenities.map((amenity, index) => (
-                            <div key={index} className="flex items-center mb-2">
-                                <span className="flex h-2 w-2 rounded-full bg-sky-500 mr-2" />
-                                <p className="text-sm text-muted-foreground">{amenity}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <RoomAmenities amenities={room.amenities} />
             </CardContent>
             <CardFooter>
                 {isMyRooms && <Button onClick={() => router.push(`/room/${room.id}`)} variant='outline'>Edit</Button>}
