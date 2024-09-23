@@ -1,84 +1,173 @@
-"use client"
+import { format, isBefore, startOfDay } from 'date-fns';
+import { CalendarIcon } from '@radix-ui/react-icons';
+import { cn } from '@/lib/utils';
+import { UseFormReturn } from 'react-hook-form';
 
-import React from "react"
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { format } from "date-fns"
-import TimeRangePicker from "shadcn-time-range-picker";
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+    Select,
+    SelectContent,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
+import { DateTimePickerData } from '@/schemas';
+
 
 export type DateTimePickerFormProps = {
-    date: Date | undefined,
-    setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
-    handleTimeRangeChange: (timeRange: string) => void,
-    timeRange: string,
-    disabledSlots?: { [date: string]: { [timeSlot: string]: boolean } }
-}
+    form: UseFormReturn<DateTimePickerData>;
+    date: Date | null | undefined;
+    setDate: (date: Date | null) => void;
+    startTime: string;
+    setStartTime: (time: string) => void;
+    endTime: string;
+    setEndTime: (time: string) => void;
+    generateTimeOptions: () => JSX.Element[];
+    handleBookRoom: () => void;
+};
 
-export function DateTimePickerForm({
+const DateTimePickerForm = ({
+    form,
     date,
     setDate,
-    handleTimeRangeChange,
-    timeRange,
-    disabledSlots
-}: DateTimePickerFormProps) {
-
-    //To-Do: implement this in the app
-    const isDisabledDate = (dateToCheck: Date) => {
-        const dateString = dateToCheck.toISOString().split('T')[0];
-        return disabledSlots && disabledSlots[dateString] !== undefined;
-    };
+    startTime,
+    setStartTime,
+    endTime,
+    setEndTime,
+    generateTimeOptions,
+    handleBookRoom,
+}: DateTimePickerFormProps) => {
+    const today = startOfDay(new Date());
 
     return (
-        <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                    variant={"outline"}
-                    className={cn(
-                        "w-[300px] justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
-                    )}
-                >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, `PPP ${timeRange}`) : <span>Pick a date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    initialFocus
-                />
-                <div className="p-3 border-t border-border">
-                    <div>
-                        <h1>Select a Time Range</h1>
-                        <TimeRangePicker
-                            initialStartTime="08:00"
-                            initialEndTime="17:00"
-                            onTimeRangeChange={handleTimeRangeChange}
-                            sort={true}
-                            showApplyButton={true}
-                            layout="row"
-                            startTimeLabel="Work Start"
-                            endTimeLabel="Work End"
-                            step={15}
-                            buttonProps={{
-                                variant: "outline",
-                                className: "font-semibold",
-                            }}
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleBookRoom)} className="space-y-8">
+                <div className="flex flex-col sm:flex-row w-full gap-4">
 
-                        />
-                    </div>
+                    <FormField
+                        control={form.control}
+                        name="datetime"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col w-full">
+                                <FormLabel>Date</FormLabel>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant="outline"
+                                                className={cn(
+                                                    'w-full font-normal',
+                                                    !field.value && 'text-muted-foreground'
+                                                )}
+                                            >
+                                                {field.value ? (
+                                                    `${format(field.value, 'PPP')}`
+                                                ) : (
+                                                    <span>Pick a date</span>
+                                                )}
+                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="start">
+                                        <Calendar
+                                            mode="single"
+                                            selected={date || field.value}
+                                            onSelect={(selectedDate) => {
+                                                if (selectedDate) {
+                                                    const newSelectedDate = new Date(selectedDate);
+                                                    const year = newSelectedDate.getFullYear();
+                                                    const month = newSelectedDate.getMonth() + 1;
+                                                    const day = newSelectedDate.getDate();
+                                                    const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                                                    const finalDate = new Date(`${formattedDate}T00:00:00Z`);
+                                                    setDate(finalDate);
+                                                    field.onChange(finalDate);
+                                                } else {
+                                                    console.error("Selected date is undefined");
+                                                }
+                                            }}
+                                            disabled={(date) => isBefore(startOfDay(date), today)}
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="startTime"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>Start Time</FormLabel>
+                                <FormControl>
+                                    <Select
+                                        defaultValue={startTime}
+                                        onValueChange={(e) => {
+                                            setStartTime(e);
+                                            field.onChange(e);
+                                        }}
+                                    >
+                                        <SelectTrigger className="font-normal focus:ring-0 w-[120px]">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <ScrollArea className="h-[15rem]">
+                                                {generateTimeOptions()}
+                                            </ScrollArea>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="endTime"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>End Time</FormLabel>
+                                <FormControl>
+                                    <Select
+                                        defaultValue={endTime}
+                                        onValueChange={(e) => {
+                                            setEndTime(e);
+                                            field.onChange(e);
+                                        }}
+                                    >
+                                        <SelectTrigger className="font-normal focus:ring-0 w-[120px]">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <ScrollArea className="h-[15rem]">
+                                                {generateTimeOptions()}
+                                            </ScrollArea>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                 </div>
-            </PopoverContent>
-        </Popover>
-    )
-}
+            </form>
+        </Form>
+    );
+};
+
+export default DateTimePickerForm;

@@ -52,6 +52,18 @@ export const AddRoomSchema = z.object({
         .nonempty({ message: "There must be at least one amenity." }),
 });
 
+export const DateTimePickerSchema = z.object({
+    datetime: z.date({
+        required_error: 'Date is required!',
+    }),
+    startTime: z.string({
+        required_error: 'Start time is required!',
+    }),
+    endTime: z.string({
+        required_error: 'End time is required!',
+    }),
+})
+
 export type SignInFormData = z.infer<typeof SignInSchema>;
 export type ValidFieldNames = keyof SignInFormData;
 
@@ -60,3 +72,6 @@ export type ValidFieldNamesRegister = keyof SignUpFormData;
 
 export type AddRoomFormData = z.infer<typeof AddRoomSchema>;
 export type ValidFieldNamesAddRoomsForm = keyof AddRoomFormData;
+
+export type DateTimePickerData = z.infer<typeof DateTimePickerSchema>;
+export type ValidFieldNamesDateTimePickerForm = keyof DateTimePickerData;
