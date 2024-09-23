@@ -13,14 +13,14 @@ import { Button } from '@/components/ui/button'
 
 const RoomCard = ({ room }: { room: Room }) => {
     const pathName = usePathname()
-    const isMyRooms = pathName.includes('my-rooms')
+    const isAllRooms = pathName.includes('all-rooms')
     const router = useRouter()
 
     return (
-        <Card onClick={() => !isMyRooms && router.push(`/room-details/${room.id}`)}
+        <Card onClick={() => !isAllRooms && router.push(`/room-details/${room.id}`)}
             className={cn(
                 'cursor-pointer transition-transform duration-200 hover:scale-105',
-                isMyRooms && 'cursor-default'
+                isAllRooms && 'cursor-default'
             )}>
             <CardHeader className="relative">
 
@@ -31,7 +31,7 @@ const RoomCard = ({ room }: { room: Room }) => {
                 <RoomAmenities amenities={room.amenities} />
             </CardContent>
             <CardFooter>
-                {isMyRooms && <Button onClick={() => router.push(`/room/${room.id}`)} variant='outline'>Edit</Button>}
+                {isAllRooms && <Button onClick={() => router.push(`/room/${room.id}`)} variant='outline'>Edit</Button>}
             </CardFooter>
 
         </Card>

@@ -34,20 +34,23 @@ export function NavMenu({ currentUser }: NavMenuProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 {currentUser?.role == 'ADMIN' && (
-                    <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/room/new')}>
-                        <Plus size={15} />
-                        <span>
-                            Add Room
-                        </span>
-                    </DropdownMenuItem>
-                )}
+                    <div>
+                        <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/room/new')}>
+                            <Plus size={15} />
+                            <span>
+                                Add Room
+                            </span>
+                        </DropdownMenuItem>
 
-                <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/my-rooms')}>
-                    <DoorOpen size={15} />
-                    <span>
-                        Rooms
-                    </span>
-                </DropdownMenuItem>
+
+                        <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/all-rooms')}>
+                            <DoorOpen size={15} />
+                            <span>
+                                Rooms
+                            </span>
+                        </DropdownMenuItem>
+                    </div>
+                )}
                 <DropdownMenuItem className="cursor-pointer flex gap-2 items-center" onClick={() => router.push('/my-bookings')}>
                     <BookOpenCheck size={15} />
                     <span>My Bookings</span>

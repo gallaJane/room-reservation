@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-export const getRooms = async (search: string) => {
+export const getRooms = async (search?: string) => {
     try {
         const rooms = await db.room.findMany({
             where: {
