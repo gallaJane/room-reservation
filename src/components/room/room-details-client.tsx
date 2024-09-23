@@ -118,6 +118,7 @@ const DatePickerForm = ({ room, bookings }: { room: Room, bookings?: Booking[] }
                 })
                 .then((data) => {
                     console.log(data);
+                    router.refresh();
                     router.push('/book-room');
                 })
                 .catch((error) => {
